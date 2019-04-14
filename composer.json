@@ -1,0 +1,12 @@
+{
+  "name": "clarsong/IT328/dating",
+  "authors": [
+    {
+      "name": "Cody Larson",
+      "email": "tostrander@greenriver.edu"
+    }
+  ],
+  "require": {
+    "bcosca/fatfree-core": "dev-master"
+  }
+}
