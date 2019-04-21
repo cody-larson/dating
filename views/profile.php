@@ -33,7 +33,7 @@
         <hr>
         <div class="row">
             <div class="col-8">
-                <form id="profileform">
+                <form id="profileform"  method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                     <div class="form-group">
                         <label for="email"><b>Email</b></label>
                         <input type="text" class="form-control" id="email" name="email">
@@ -46,12 +46,12 @@
                     </div>
                     <label><b>Seeking</b></label><br>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="seeking" id="inlineRadio1" value="male">
-                        <label class="form-check-label" for="inlineRadio1">Male</label>
+                        <input class="form-check-input" type="radio" name="seeking" id="inlineRadio3" value="male">
+                        <label class="form-check-label" for="inlineRadio3">Male</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="seeking" id="inlineRadio2" value="female">
-                        <label class="form-check-label" for="inlineRadio2">Female</label>
+                        <input class="form-check-input" type="radio" name="seeking" id="inlineRadio4" value="female">
+                        <label class="form-check-label" for="inlineRadio4">Female</label>
                     </div>
                 </form>
             </div>
@@ -62,7 +62,7 @@
                 </div>
             </div>
             <div class="container text-right mb-2">
-                <input class="btn btn-primary" type="submit" value="Next >">
+                <input class="btn btn-primary" type="submit" form="profileform" value="Next >">
             </div>
         </div>
     </div>

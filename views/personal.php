@@ -33,11 +33,11 @@
         <hr>
         <div class="row">
             <div class="col-8">
-                <form>
+                <form id="personalform" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                     <div class="form-group">
-                        <label for="fname">First Name</label>
+                        <label for="fname"><b>First Name</b></label>
                         <div class="input-group">
-                        <input type="text" class="form-control" id="fname" name="fname" placeholder="Enter first name">
+                        <input type="text" class="form-control" id="fname" name="fname">
                         <span class="input-group-append">
                             <div class="input-group-text bg-transparent">
                                 <i class="fas fa-address-card"></i>
@@ -46,24 +46,24 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="lname">Last Name</label>
+                        <label for="lname"><b>Last Name</b></label>
                         <input type="text" class="form-control" id="lname" name="lname" placeholder="Enter last name">
                     </div>
                     <div class="form-group">
-                        <label for="age">Age</label>
+                        <label for="age"><b>Age</b></label>
                         <input type="text" class="form-control" id="age" name="age" placeholder="Enter age">
                     </div>
                     <label>Gender</label><br>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+                        <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="male">
                         <label class="form-check-label" for="inlineRadio1">Male</label>
                     </div>
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+                        <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="female">
                         <label class="form-check-label" for="inlineRadio2">Female</label>
                     </div>
                     <div class="form-group mt-2">
-                        <label for="phone">Phone Number</label>
+                        <label for="phone"><b>Phone Number</b></label>
                         <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter phone number">
                     </div>
                 </form>
@@ -74,7 +74,7 @@
                 </div>
             </div>
             <div class="container text-right mb-2">
-                <input class="btn btn-primary" type="submit" value="Next >">
+                <input class="btn btn-primary" type="submit" form="personalform" value="Next >">
             </div>
         </div>
     </div>
