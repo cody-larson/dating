@@ -33,41 +33,40 @@
         <h1>Profile</h1>
         <hr>
         <div class="row">
-            <div class="col-8">
-                <form id="profileform" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
-                    <div class="form-group">
-                        <label for="email"><b>Email</b></label>
-                        <input type="text" class="form-control" id="email" name="email">
-                    </div>
-                    <div class="form-group">
-                        <label for="state"><b>State</b></label>
-                        <select class="form-control" id="state" name="state">
-                            <repeat group="{{ @states }}" value="{{ @state }}">
-                                <option> {{ trim(@state) }}</option>
-                            </repeat>
-                        </select>
-                    </div>
-                    <label><b>Seeking</b></label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="seeking" id="inlineRadio3" value="male">
-                        <label class="form-check-label" for="inlineRadio3">Male</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="seeking" id="inlineRadio4" value="female">
-                        <label class="form-check-label" for="inlineRadio4">Female</label>
-                    </div>
-                </form>
+            <div class="col-md-6">
+                <ul class="list-group">
+                    <li class="list-group-item"> {{ @firstName }} {{@lastName}}</li>
+                    <check if="{{ @memberGender == '' }}">
+                        <false>
+                            <li class="list-group-item"> {{ @memberGender }}</li>
+                        </false>
+                    </check>
+                    <li class="list-group-item"> {{ @memberAge }}</li>
+                    <li class="list-group-item"> {{ @memberPhone }}</li>
+                    <li class="list-group-item"> {{ @memberEmail}}</li>
+                    <li class="list-group-item"> {{ @memberState }}</li>
+                    <li class="list-group-item"> {{ @memberSeeking }}</li>
+                    <check if="{{ @memberOutdoor == '' && @memberIndoor == '' }}">
+                        <false>
+                            <li class="list-group-item"> {{ @memberOutdoor}}, {{ @memberIndoor }}</li>
+                        </false>
+                    </check>
+                </ul>
             </div>
-            <div class="col-4">
-                <div class="form-group">
-                    <label for="biography"><b>Biography</b></label>
-                    <textarea class="form-control" id="biography" rows="5" form="profileform" name="bio"></textarea>
+            <div class="col-md-6 text-center">
+            <span style="font-size: 200px; color: Tomato;">
+                <i class="fas fa-user"></i>
+            </span>
+                <div class="container">
+                    <h3>Biography</h3>
+                    <p> {{ @memberBio }}</p>
                 </div>
             </div>
-            <div class="container text-right mb-2">
-                <input class="btn btn-primary" type="submit" form="profileform" value="Next >">
-            </div>
         </div>
+        <div class="container text-center mb-2">
+            <a href="./" class="btn btn-primary btn-lg" role="button"> Contact Me! </a>
+        </div>
+    </div>
     </div>
 </section>
 

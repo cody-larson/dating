@@ -31,7 +31,7 @@ $f3->route('GET /', function () {
 });
 
 //Define personal route
-$f3->route('GET|POST /personal', function () {
+$f3->route('GET|POST /personal', function ($f3) {
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['fname'] = $_POST['fname'];
@@ -39,6 +39,7 @@ $f3->route('GET|POST /personal', function () {
         $_SESSION['age'] = $_POST['age'];
         $_SESSION['gender'] = $_POST['gender'];
         $_SESSION['phone'] = $_POST['phone'];
+        $f3->reroute('./profile');
     }
 
     //Display a view
@@ -47,14 +48,17 @@ $f3->route('GET|POST /personal', function () {
 });
 
 //Define profile route
-$f3->route('GET|POST /profile', function () {
+$f3->route('GET|POST /profile', function ($f3) {
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['email'] = $_POST['email'];
         $_SESSION['state'] = $_POST['state'];
         $_SESSION['seeking'] = $_POST['seeking'];
         $_SESSION['bio'] = $_POST['bio'];
+        $f3->reroute('./interests');
     }
+
+    $f3->set('states', array('Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Puerto Rico', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'));
 
     //Display a view
     $view = new Template();
@@ -62,11 +66,28 @@ $f3->route('GET|POST /profile', function () {
 });
 
 //Define interests route
-$f3->route('GET /interests', function () {
+$f3->route('GET|POST /interests', function ($f3) {
+    $f3->set('indoor', array('tv', 'movies', 'cooking', 'board games', 'puzzles', 'reading', 'playing cards', 'video games'));
+    $f3->set('outdoor', array('hiking', 'biking', 'swimming', 'collecting', 'walking', 'climbing'));
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $_SESSION['indoor'] = $_POST['indoorInterests'];
+        $_SESSION['outdoor'] = $_POST['outdoorInterests'];
+        $f3->reroute('./summary');
+    }
 
     //Display a view
     $view = new Template();
     echo $view->render('views/interests.php');
+});
+
+//Define the summary route
+$f3->route('GET|POST /summary', function () {
+
+
+    //Display summary view
+    $view = new Template();
+    echo $view->render('views/summary.php');
 });
 
 //Run Fat-Free

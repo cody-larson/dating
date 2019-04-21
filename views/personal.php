@@ -14,7 +14,8 @@
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
     <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
 
     <!-- Personal CSS -->
     <link rel="stylesheet" href="./styles/styles.css">
@@ -33,12 +34,12 @@
         <hr>
         <div class="row">
             <div class="col-8">
-                <form id="personalform" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                <form id="personalform" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="form-group">
                         <label for="fname"><b>First Name</b></label>
                         <div class="input-group">
-                        <input type="text" class="form-control" id="fname" name="fname">
-                        <span class="input-group-append">
+                            <input type="text" class="form-control" id="fname" name="fname">
+                            <span class="input-group-append">
                             <div class="input-group-text bg-transparent">
                                 <i class="fas fa-address-card"></i>
                             </div>
@@ -70,7 +71,8 @@
             </div>
             <div class="col-4">
                 <div class="container bg-light border rounded text-center mt-4 pt-1">
-                        <p><b>Note:</b> All information entered is protected by our <a href="">privacy policy</a>. Profile information can only be viewed by others with your permission. </p>
+                    <p><b>Note:</b> All information entered is protected by our <a href="">privacy policy</a>. Profile
+                        information can only be viewed by others with your permission. </p>
                 </div>
             </div>
             <div class="container text-right mb-2">
