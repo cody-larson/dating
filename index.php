@@ -35,5 +35,13 @@ $f3->route('GET /personal', function () {
     echo $view->render('views/personal.php');
 });
 
+//Define profile route
+$f3->route('GET /profile', function () {
+
+    //Display a view
+    $view = new Template();
+    echo $view->render('views/profile.php');
+});
+
 //Run Fat-Free
 $f3->run();
