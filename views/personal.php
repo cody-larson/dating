@@ -65,7 +65,7 @@
                     </div>
                     <div class="form-group mt-2">
                         <label for="phone"><b>Phone Number</b></label>
-                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter phone number">
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="(xxx)xxx-xxxx">
                     </div>
                 </form>
             </div>

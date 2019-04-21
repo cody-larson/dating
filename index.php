@@ -82,8 +82,22 @@ $f3->route('GET|POST /interests', function ($f3) {
 });
 
 //Define the summary route
-$f3->route('GET|POST /summary', function () {
+$f3->route('GET|POST /summary', function ($f3) {
 
+    $f3->set('firstName', $_SESSION['fname']);
+    $f3->set('lastName', $_SESSION['lname']);
+    $f3->set('memberAge', $_SESSION['age']);
+    $f3->set('memberGender', $_SESSION['gender']);
+    $f3->set('memberPhone', $_SESSION['phone']);
+    $f3->set('memberEmail', $_SESSION['email']);
+    $f3->set('memberState', $_SESSION['state']);
+    $f3->set('memberSeeking', $_SESSION['seeking']);
+    $f3->set('memberBio', $_SESSION['bio']);
+
+    $indoor =implode(', ', $_SESSION['indoor']);
+    $outdoor =implode(', ', $_SESSION['outdoor']);
+    $f3->set('memberOutdoor', $outdoor);
+    $f3->set('memberIndoor', $indoor);
 
     //Display summary view
     $view = new Template();

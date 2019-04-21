@@ -30,25 +30,23 @@
 </header>
 <section id="main">
     <div class="container border rounded pt-3 pb-3">
-        <h1>Profile</h1>
-        <hr>
         <div class="row">
             <div class="col-md-6">
                 <ul class="list-group">
-                    <li class="list-group-item"> {{ @firstName }} {{@lastName}}</li>
+                    <li class="list-group-item">Name: {{ @firstName }} {{@lastName}}</li>
                     <check if="{{ @memberGender == '' }}">
                         <false>
-                            <li class="list-group-item"> {{ @memberGender }}</li>
+                            <li class="list-group-item">Gender: {{ @memberGender }}</li>
                         </false>
                     </check>
-                    <li class="list-group-item"> {{ @memberAge }}</li>
-                    <li class="list-group-item"> {{ @memberPhone }}</li>
-                    <li class="list-group-item"> {{ @memberEmail}}</li>
-                    <li class="list-group-item"> {{ @memberState }}</li>
-                    <li class="list-group-item"> {{ @memberSeeking }}</li>
+                    <li class="list-group-item">Age: {{ @memberAge }}</li>
+                    <li class="list-group-item">Phone: {{ @memberPhone }}</li>
+                    <li class="list-group-item">Email: {{ @memberEmail}}</li>
+                    <li class="list-group-item">State: {{ @memberState }}</li>
+                    <li class="list-group-item">Seeking: {{ @memberSeeking }}</li>
                     <check if="{{ @memberOutdoor == '' && @memberIndoor == '' }}">
                         <false>
-                            <li class="list-group-item"> {{ @memberOutdoor}}, {{ @memberIndoor }}</li>
+                            <li class="list-group-item">Interests: {{ @memberOutdoor}}, {{ @memberIndoor }}</li>
                         </false>
                     </check>
                 </ul>
@@ -63,10 +61,9 @@
                 </div>
             </div>
         </div>
-        <div class="container text-center mb-2">
+        <div class="container text-center mt-2 mb-2">
             <a href="./" class="btn btn-primary btn-lg" role="button"> Contact Me! </a>
         </div>
-    </div>
     </div>
 </section>
 
