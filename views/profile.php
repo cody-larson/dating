@@ -37,7 +37,7 @@
                 <form id="profileform" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                     <div class="form-group">
                         <label for="email"><b>Email</b></label>
-                        <input type="text" class="form-control" id="email" name="email">
+                        <input type="text" class="form-control" id="email" name="email" value="{{ @email }}">
                     </div>
                     <div class="form-group">
                         <label for="state"><b>State</b></label>
@@ -46,6 +46,7 @@
                                 <option> {{ trim(@state) }}</option>
                             </repeat>
                         </select>
+                        <span class="error"> {{ @stateErr }} </span>
                     </div>
                     <label><b>Seeking</b></label><br>
                     <div class="form-check form-check-inline">
@@ -56,12 +57,15 @@
                         <input class="form-check-input" type="radio" name="seeking" id="inlineRadio4" value="female">
                         <label class="form-check-label" for="inlineRadio4">Female</label>
                     </div>
+                    <span class="error"> {{ @seekingErr }} </span>
                 </form>
             </div>
             <div class="col-4">
                 <div class="form-group">
                     <label for="biography"><b>Biography</b></label>
-                    <textarea class="form-control" id="biography" rows="5" form="profileform" name="bio"></textarea>
+                    <textarea class="form-control" id="biography" rows="5" form="profileform" name="bio">
+                        {{ @bio }}
+                    </textarea>
                 </div>
             </div>
             <div class="container text-right mb-2">

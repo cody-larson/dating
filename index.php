@@ -116,19 +116,55 @@ $f3->route('GET|POST /personal', function ($f3) {
 //Define profile route
 $f3->route('GET|POST /profile', function ($f3) {
 
-    if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $_SESSION['email'] = $_POST['email'];
-        $_SESSION['state'] = $_POST['state'];
-        $_SESSION['seeking'] = $_POST['seeking'];
-        $_SESSION['bio'] = $_POST['bio'];
-        $f3->reroute('./interests');
-    }
-
     $f3->set('states', array('Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Puerto Rico', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'));
 
-    //Display a view
-    $view = new Template();
-    echo $view->render('views/profile.php');
+    $f3->set('isValid', TRUE);
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+
+        if (isset($_POST['email']) && $_POST['email'] != "") {
+            $f3->set('email', $_POST['email']);
+        }
+
+        if (empty($_POST['email'])) {
+            $f3->set('emailErr', "Email is required");
+            $f3->set('isValid', FALSE);
+        } else {
+            if (validEmail($_POST['email'])) {
+                $_SESSION['email'] = $_POST['email'];
+            } else {
+                $f3->set('emailErr', "Not a valid email address");
+                $f3->set('isValid', FALSE);
+            }
+        }
+
+        if (!empty($_POST['state'])) {
+            $_SESSION['state'] = $_POST['state'];
+        }
+
+        if (!isset($_POST['seeking'])) {
+            $f3->set('seekingErr', "Please select Male or Female");
+            $f3->set('isValid', FALSE);
+        } else {
+            $_SESSION['seeking'] = $_POST['seeking'];
+        }
+
+        if (isset($_POST['bio']) && $_POST['bio'] != "") {
+            $f3->set('bio', $_POST['bio']);
+        }
+
+        if (!empty($_POST['bio'])) {
+            $_SESSION['bio'] = $_POST['bio'];
+        }
+
+        $valid = $f3->get('isValid');
+
+        if ($valid) {
+            $f3->reroute('./interests');
+        }
+    }
+
+    echo Template::instance()->render('views/profile.php');
 });
 
 //Define interests route
