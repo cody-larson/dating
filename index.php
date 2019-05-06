@@ -172,15 +172,34 @@ $f3->route('GET|POST /interests', function ($f3) {
     $f3->set('indoor', array('tv', 'movies', 'cooking', 'board games', 'puzzles', 'reading', 'playing cards', 'video games'));
     $f3->set('outdoor', array('hiking', 'biking', 'swimming', 'collecting', 'walking', 'climbing'));
 
+    $f3->set('isValid', FALSE);
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $_SESSION['indoor'] = $_POST['indoorInterests'];
-        $_SESSION['outdoor'] = $_POST['outdoorInterests'];
+
+        if(validIndoor($_POST['indoorInterests'])) {
+            $_SESSION['indoor'] = $_POST['indoorInterests'];
+            $f3->set('isValid', TRUE);
+        } else {
+            $f3->set('isValid', FALSE);
+        }
+
+        if(validOutdoor($_POST['outdoorInterests'])) {
+            $_SESSION['outdoor'] = $_POST['outdoorInterests'];
+            $f3->set('isValid', TRUE);
+        } else {
+            $f3->set('isValid', FALSE);
+        }
+
+        $valid = $f3->get('isValid');
+
+        if ($valid) {
+            $f3->reroute('./summary');
+        }
+
         $f3->reroute('./summary');
     }
 
-    //Display a view
-    $view = new Template();
-    echo $view->render('views/interests.php');
+    echo Template::instance()->render('views/interests.php');
 });
 
 //Define the summary route
