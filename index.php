@@ -10,8 +10,9 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-//Require autoload file
+//Required files
 require_once('vendor/autoload.php');
+include('model/valid.php');
 
 ob_start();
 session_start();
@@ -33,18 +34,83 @@ $f3->route('GET /', function () {
 //Define personal route
 $f3->route('GET|POST /personal', function ($f3) {
 
+    $f3->set('isValid', TRUE);
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $_SESSION['fname'] = $_POST['fname'];
-        $_SESSION['lname'] = $_POST['lname'];
-        $_SESSION['age'] = $_POST['age'];
+
+        if (isset($_POST['fname']) && $_POST['fname'] != "") {
+            $f3->set('first', $_POST['fname']);
+        }
+
+        if (empty($_POST['fname'])) {
+            $f3->set('fNameErr', "First name is required");
+            $f3->set('isValid', FALSE);
+        } else {
+            if (validName($_POST['fname'])) {
+                $_SESSION['fname'] = $_POST['fname'];
+            } else {
+                $f3->set('fNameErr', "Not a valid first name");
+                $f3->set('isValid', FALSE);
+            }
+        }
+
+        if (isset($_POST['lname']) && $_POST['lname'] != "") {
+            $f3->set('last', $_POST['lname']);
+        }
+
+        if (empty($_POST['lname'])) {
+            $f3->set('lNameErr', "Last name is required");
+            $f3->set('isValid', FALSE);
+        } else {
+            if (validName($_POST['lname'])) {
+                $_SESSION['lname'] = $_POST['lname'];
+            } else {
+                $f3->set('lNameErr', "Not a valid last name");
+                $f3->set('isValid', FALSE);
+            }
+        }
+
+        if (isset($_POST['age']) && $_POST['age'] != "") {
+            $f3->set('age', $_POST['age']);
+        }
+
+        if (empty($_POST['age'])) {
+            $f3->set('ageErr', "Age is required");
+            $f3->set('isValid', FALSE);
+        } else {
+            if (validAge($_POST['age'])) {
+                $_SESSION['age'] = $_POST['age'];
+            } else {
+                $f3->set('ageErr', "Must enter a valid age over 18");
+                $f3->set('isValid', FALSE);
+            }
+        }
+
+        if (isset($_POST['phone']) && $_POST['phone'] != "") {
+            $f3->set('phone', $_POST['phone']);
+        }
+
+        if (empty($_POST['phone'])) {
+            $f3->set('phoneErr', "Phone number is required");
+            $f3->set('isValid', FALSE);
+        } else {
+            if (validPhone($_POST['phone'])) {
+                $_SESSION['phone'] = $_POST['phone'];
+            } else {
+                $f3->set('phoneErr', "Please enter a valid phone number");
+                $f3->set('isValid', FALSE);
+            }
+        }
+
         $_SESSION['gender'] = $_POST['gender'];
-        $_SESSION['phone'] = $_POST['phone'];
-        $f3->reroute('./profile');
+
+        $valid = $f3->get('isValid');
+        if ($valid) {
+            $f3->reroute('./profile');
+        }
     }
 
-    //Display a view
-    $view = new Template();
-    echo $view->render('views/personal.php');
+    echo Template::instance()->render('views/personal.php');
 });
 
 //Define profile route

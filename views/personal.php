@@ -38,7 +38,8 @@
                     <div class="form-group">
                         <label for="fname"><b>First Name</b></label>
                         <div class="input-group">
-                            <input type="text" class="form-control" id="fname" name="fname">
+                            <input type="text" class="form-control" id="fname" name="fname" value="{{ @first }}">
+                            <span class="error"> {{ @fNameErr }} </span>
                             <span class="input-group-append">
                             <div class="input-group-text bg-transparent">
                                 <i class="fas fa-address-card"></i>
@@ -48,11 +49,13 @@
                     </div>
                     <div class="form-group">
                         <label for="lname"><b>Last Name</b></label>
-                        <input type="text" class="form-control" id="lname" name="lname" placeholder="Enter last name">
+                        <input type="text" class="form-control" id="lname" name="lname" value="{{ @last }}">
+                        <span class="error"> {{ @lNameErr }} </span>
                     </div>
                     <div class="form-group">
                         <label for="age"><b>Age</b></label>
-                        <input type="text" class="form-control" id="age" name="age" placeholder="Enter age">
+                        <input type="text" class="form-control" id="age" name="age" value="{{ @age }}">
+                        <span class="error"> {{ @ageErr }} </span>
                     </div>
                     <label>Gender</label><br>
                     <div class="form-check form-check-inline">
@@ -65,7 +68,8 @@
                     </div>
                     <div class="form-group mt-2">
                         <label for="phone"><b>Phone Number</b></label>
-                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="(xxx)xxx-xxxx">
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="xxx-xxx-xxxx" value="{{ @phone }}">
+                        <span class="error"> {{ @phoneErr }} </span>
                     </div>
                 </form>
             </div>
