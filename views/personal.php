@@ -39,13 +39,13 @@
                         <label for="fname"><b>First Name</b></label>
                         <div class="input-group">
                             <input type="text" class="form-control" id="fname" name="fname" value="{{ @first }}">
-                            <span class="error"> {{ @fNameErr }} </span>
                             <span class="input-group-append">
                             <div class="input-group-text bg-transparent">
                                 <i class="fas fa-address-card"></i>
                             </div>
                         </span>
                         </div>
+                        <span class="error"> {{ @fNameErr }} </span>
                     </div>
                     <div class="form-group">
                         <label for="lname"><b>Last Name</b></label>
@@ -57,18 +57,24 @@
                         <input type="text" class="form-control" id="age" name="age" value="{{ @age }}">
                         <span class="error"> {{ @ageErr }} </span>
                     </div>
-                    <label>Gender</label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="inlineRadio1" value="male">
-                        <label class="form-check-label" for="inlineRadio1">Male</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="gender" id="inlineRadio2" value="female">
-                        <label class="form-check-label" for="inlineRadio2">Female</label>
-                    </div>
+                    <label><b>Gender</b></label><br>
+
+                    <repeat group="{{ @genders }}" value="{{ @gender }}">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="gender"
+                                   value="{{ @gender }}"
+                            <check if="{{ @gender == @gend }}">
+                                checked="checked"
+                            </check>
+                            >
+                            <label class="form-check-label">{{ @gender }}</label>
+                        </div>
+                    </repeat>
+
                     <div class="form-group mt-2">
                         <label for="phone"><b>Phone Number</b></label>
-                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="xxx-xxx-xxxx" value="{{ @phone }}">
+                        <input type="tel" class="form-control" id="phone" name="phone" placeholder="xxx-xxx-xxxx"
+                               value="{{ @phone }}">
                         <span class="error"> {{ @phoneErr }} </span>
                     </div>
                 </form>

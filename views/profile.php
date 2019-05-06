@@ -38,6 +38,7 @@
                     <div class="form-group">
                         <label for="email"><b>Email</b></label>
                         <input type="text" class="form-control" id="email" name="email" value="{{ @email }}">
+                        <span class="error"> {{ @emailErr }} </span>
                     </div>
                     <div class="form-group">
                         <label for="state"><b>State</b></label>

@@ -37,7 +37,11 @@
             <div class="container-fluid">
                 <repeat group="{{ @indoor }}" value="{{ @indoors }}">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="indoorInterests[]" value="{{ @indoors }}">
+                        <input class="form-check-input" type="checkbox" name="indoorInterests[]" value="{{ @indoors }}"
+                        <check if="{{ !empty(@indoorArray) && in_array(@indoors, @indoorArray) }}">
+                            checked="checked"
+                        </check>
+                        >
                         <label class="form-check-label">{{ @indoors }}</label>
                     </div>
                 </repeat>
@@ -47,7 +51,11 @@
                 <repeat group="{{ @outdoor }}" value="{{ @outdoors }}">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" name="outdoorInterests[]"
-                               value="{{ @outdoors }}">
+                               value="{{ @outdoors }}"
+                        <check if="{{ !empty(@outdoorArray) && in_array(@outdoors, @outdoorArray) }}">
+                            checked="checked"
+                        </check>
+                        >
                         <label class="form-check-label">{{ @outdoors }}</label>
                     </div>
                 </repeat>

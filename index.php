@@ -12,7 +12,7 @@ error_reporting(E_ALL);
 
 //Required files
 require_once('vendor/autoload.php');
-include('model/valid.php');
+require_once('model/valid.php');
 
 ob_start();
 session_start();
@@ -35,6 +35,8 @@ $f3->route('GET /', function () {
 $f3->route('GET|POST /personal', function ($f3) {
 
     $f3->set('isValid', TRUE);
+
+    $f3->set('genders', array('Male', 'Female'));
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
@@ -102,6 +104,7 @@ $f3->route('GET|POST /personal', function ($f3) {
             }
         }
 
+        $f3->set('gend', $_POST['gender']);
         $_SESSION['gender'] = $_POST['gender'];
 
         $valid = $f3->get('isValid');
@@ -176,14 +179,17 @@ $f3->route('GET|POST /interests', function ($f3) {
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
-        if(validIndoor($_POST['indoorInterests'])) {
+        $f3->set('indoorArray', $_POST['indoorInterests']);
+        $f3->set('outdoorArray', $_POST['outdoorInterests']);
+
+        if (validIndoor($_POST['indoorInterests'])) {
             $_SESSION['indoor'] = $_POST['indoorInterests'];
             $f3->set('isValid', TRUE);
         } else {
             $f3->set('isValid', FALSE);
         }
 
-        if(validOutdoor($_POST['outdoorInterests'])) {
+        if (validOutdoor($_POST['outdoorInterests'])) {
             $_SESSION['outdoor'] = $_POST['outdoorInterests'];
             $f3->set('isValid', TRUE);
         } else {
@@ -195,8 +201,6 @@ $f3->route('GET|POST /interests', function ($f3) {
         if ($valid) {
             $f3->reroute('./summary');
         }
-
-        $f3->reroute('./summary');
     }
 
     echo Template::instance()->render('views/interests.php');
@@ -215,8 +219,8 @@ $f3->route('GET|POST /summary', function ($f3) {
     $f3->set('memberSeeking', $_SESSION['seeking']);
     $f3->set('memberBio', $_SESSION['bio']);
 
-    $indoor =implode(', ', $_SESSION['indoor']);
-    $outdoor =implode(', ', $_SESSION['outdoor']);
+    $indoor = implode(', ', $_SESSION['indoor']);
+    $outdoor = implode(', ', $_SESSION['outdoor']);
     $f3->set('memberOutdoor', $outdoor);
     $f3->set('memberIndoor', $indoor);
 
