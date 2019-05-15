@@ -27,6 +27,8 @@ $f3->set('DEBUG', 3);
 //Define arrays
 $f3->set('genders', array('Male', 'Female'));
 $f3->set('states', array('Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Puerto Rico', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'));
+$f3->set('indoor', array('tv', 'movies', 'cooking', 'board games', 'puzzles', 'reading', 'playing cards', 'video games'));
+$f3->set('outdoor', array('hiking', 'biking', 'swimming', 'collecting', 'walking', 'climbing'));
 
 //Define a default route
 $f3->route('GET /', function () {
@@ -43,6 +45,12 @@ $f3->route('GET|POST /personal', function ($f3) {
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+        if (isset($_POST['premiumCheck'])) {
+            $member = new PremiumMember();
+        } else {
+            $member = new Member();
+        }
+
         if (isset($_POST['fname']) && $_POST['fname'] != "") {
             $f3->set('first', $_POST['fname']);
         }
@@ -52,6 +60,7 @@ $f3->route('GET|POST /personal', function ($f3) {
             $f3->set('isValid', FALSE);
         } else {
             if (validName($_POST['fname'])) {
+                $member->setFname($_POST['fname']);
                 $_SESSION['fname'] = $_POST['fname'];
             } else {
                 $f3->set('fNameErr', "Not a valid first name");
@@ -68,7 +77,7 @@ $f3->route('GET|POST /personal', function ($f3) {
             $f3->set('isValid', FALSE);
         } else {
             if (validName($_POST['lname'])) {
-                $_SESSION['lname'] = $_POST['lname'];
+                $member->setLname($_POST['lname']);
             } else {
                 $f3->set('lNameErr', "Not a valid last name");
                 $f3->set('isValid', FALSE);
@@ -84,11 +93,15 @@ $f3->route('GET|POST /personal', function ($f3) {
             $f3->set('isValid', FALSE);
         } else {
             if (validAge($_POST['age'])) {
-                $_SESSION['age'] = $_POST['age'];
+                $member->setAge($_POST['age']);
             } else {
                 $f3->set('ageErr', "Must enter a valid age over 18");
                 $f3->set('isValid', FALSE);
             }
+        }
+
+        if (!empty($_POST['gender'])) {
+            $member->setGender($_POST['gender']);
         }
 
         if (isset($_POST['phone']) && $_POST['phone'] != "") {
@@ -100,17 +113,17 @@ $f3->route('GET|POST /personal', function ($f3) {
             $f3->set('isValid', FALSE);
         } else {
             if (validPhone($_POST['phone'])) {
-                $_SESSION['phone'] = $_POST['phone'];
+                $member->setPhone($_POST['phone']);
             } else {
                 $f3->set('phoneErr', "Please enter a valid phone number");
                 $f3->set('isValid', FALSE);
             }
         }
 
-        $f3->set('gend', $_POST['gender']);
-        $_SESSION['gender'] = $_POST['gender'];
+        $_SESSION['member'] = serialize($member);
 
         $valid = $f3->get('isValid');
+
         if ($valid) {
             $f3->reroute('./profile');
         }
@@ -126,6 +139,8 @@ $f3->route('GET|POST /profile', function ($f3) {
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+        $member = unserialize($_SESSION['member']);
+
         if (isset($_POST['email']) && $_POST['email'] != "") {
             $f3->set('email', $_POST['email']);
         }
@@ -135,7 +150,7 @@ $f3->route('GET|POST /profile', function ($f3) {
             $f3->set('isValid', FALSE);
         } else {
             if (validEmail($_POST['email'])) {
-                $_SESSION['email'] = $_POST['email'];
+                $member->setEmail($_POST['email']);
             } else {
                 $f3->set('emailErr', "Not a valid email address");
                 $f3->set('isValid', FALSE);
@@ -143,7 +158,7 @@ $f3->route('GET|POST /profile', function ($f3) {
         }
 
         if (!empty($_POST['state'])) {
-            $_SESSION['state'] = $_POST['state'];
+            $member->setState($_POST['state']);
         }
 
         $f3->set('stateOption', $_POST['state']);
@@ -153,7 +168,7 @@ $f3->route('GET|POST /profile', function ($f3) {
             $f3->set('seekingErr', "Please select Male or Female");
             $f3->set('isValid', FALSE);
         } else {
-            $_SESSION['seeking'] = $_POST['seeking'];
+            $member->setSeeking($_POST['seeking']);
         }
 
         if (isset($_POST['bio']) && $_POST['bio'] != "") {
@@ -161,12 +176,18 @@ $f3->route('GET|POST /profile', function ($f3) {
         }
 
         if (!empty($_POST['bio'])) {
-            $_SESSION['bio'] = $_POST['bio'];
+            $member->setBio($_POST['bio']);
         }
+
+        $_SESSION['member'] = serialize($member);
+        $classType = get_class($member);
 
         $valid = $f3->get('isValid');
 
-        if ($valid) {
+        if ($valid && $classType == 'Member') {
+            $f3->reroute('./summary');
+        }
+        if ($valid && $classType == 'PremiumMember') {
             $f3->reroute('./interests');
         }
     }
@@ -176,25 +197,27 @@ $f3->route('GET|POST /profile', function ($f3) {
 
 //Define interests route
 $f3->route('GET|POST /interests', function ($f3) {
-    $f3->set('indoor', array('tv', 'movies', 'cooking', 'board games', 'puzzles', 'reading', 'playing cards', 'video games'));
-    $f3->set('outdoor', array('hiking', 'biking', 'swimming', 'collecting', 'walking', 'climbing'));
 
     $f3->set('isValid', FALSE);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
+        $member = unserialize($_SESSION['member']);
+
         $f3->set('indoorArray', $_POST['indoorInterests']);
         $f3->set('outdoorArray', $_POST['outdoorInterests']);
 
         if (validIndoor($_POST['indoorInterests'])) {
-            $_SESSION['indoor'] = $_POST['indoorInterests'];
+            $member->setIndoorInterests($_POST['indoorInterests']);
             $f3->set('isValid', TRUE);
         }
 
         if (validOutdoor($_POST['outdoorInterests'])) {
-            $_SESSION['outdoor'] = $_POST['outdoorInterests'];
+            $member->setOutdoorInterests($_POST['outdoorInterests']);
             $f3->set('isValid', TRUE);
         }
+
+        $_SESSION['member'] = serialize($member);
 
         $valid = $f3->get('isValid');
 
@@ -209,24 +232,27 @@ $f3->route('GET|POST /interests', function ($f3) {
 //Define the summary route
 $f3->route('GET|POST /summary', function ($f3) {
 
-    $f3->set('firstName', $_SESSION['fname']);
-    $f3->set('lastName', $_SESSION['lname']);
-    $f3->set('memberAge', $_SESSION['age']);
-    $f3->set('memberGender', $_SESSION['gender']);
-    $f3->set('memberPhone', $_SESSION['phone']);
-    $f3->set('memberEmail', $_SESSION['email']);
-    $f3->set('memberState', $_SESSION['state']);
-    $f3->set('memberSeeking', $_SESSION['seeking']);
-    $f3->set('memberBio', $_SESSION['bio']);
+    $member = unserialize($_SESSION['member']);
 
-    $indoor = implode(', ', $_SESSION['indoor']);
-    $outdoor = implode(', ', $_SESSION['outdoor']);
-    $f3->set('memberOutdoor', $outdoor);
+    $f3->set('firstName', $member->getFname());
+    $f3->set('lastName', $member->getLname());
+    $f3->set('memberAge', $member->getAge());
+    $f3->set('memberGender', $member->getGender());
+    $f3->set('memberPhone', $member->getPhone());
+    $f3->set('memberEmail', $member->getEmail());
+    $f3->set('memberState', $member->getState());
+    $f3->set('memberSeeking', $member->getSeeking());
+    $f3->set('memberBio',  $member->getBio());
+
+    $indoor = implode(', ', $member->getInDoorInterests());
+    $outdoor = implode(', ', $member->getOutDoorInterests());
+
     $f3->set('memberIndoor', $indoor);
+    $f3->set('memberOutdoor', $outdoor);
 
-    //Display summary view
-    $view = new Template();
-    echo $view->render('views/summary.php');
+    $_SESSION['member'] = serialize($member);
+
+    echo Template::instance()->render('views/summary.php');
 });
 
 //Run Fat-Free
