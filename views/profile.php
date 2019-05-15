@@ -44,22 +44,30 @@
                         <label for="state"><b>State</b></label>
                         <select class="form-control" id="state" name="state">
                             <repeat group="{{ @states }}" value="{{ @state }}">
-                                <option> {{ trim(@state) }}</option>
+                                <option
+                                <check if="{{ @state == @stateOption}}">
+                                    selected="selected"
+                                </check>
+                                > {{ trim(@state) }}</option>
                             </repeat>
                         </select>
                         <span class="error"> {{ @stateErr }} </span>
                     </div>
                     <label><b>Seeking</b></label><br>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="seeking" id="inlineRadio3" value="male">
-                        <label class="form-check-label" for="inlineRadio3">Male</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="radio" name="seeking" id="inlineRadio4" value="female">
-                        <label class="form-check-label" for="inlineRadio4">Female</label>
-                    </div>
-                    <span class="error"> {{ @seekingErr }} </span>
+
+                    <repeat group="{{ @genders }}" value="{{ @gender }}">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="seeking"
+                                   value="{{ @gender }}"
+                            <check if="{{ @gender == @seek }}">
+                                checked="checked"
+                            </check>
+                            >
+                            <label class="form-check-label">{{ @gender }}</label>
+                        </div>
+                    </repeat>
                 </form>
+                <span class="error"> {{ @seekingErr }} </span>
             </div>
             <div class="col-4">
                 <div class="form-group">

@@ -70,12 +70,18 @@
                             <label class="form-check-label">{{ @gender }}</label>
                         </div>
                     </repeat>
-
                     <div class="form-group mt-2">
                         <label for="phone"><b>Phone Number</b></label>
                         <input type="tel" class="form-control" id="phone" name="phone" placeholder="xxx-xxx-xxxx"
                                value="{{ @phone }}">
                         <span class="error"> {{ @phoneErr }} </span>
+                    </div>
+                    <label><b>Premium Membership</b></label>
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" value="" id="premiumCheck" name="premiumCheck">
+                        <label class="form-check-label" for="premiumCheck">
+                            Sign me up for a Premium Account!
+                        </label>
                     </div>
                 </form>
             </div>

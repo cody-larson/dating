@@ -23,12 +23,12 @@ function validPhone($data) {
 
 function validIndoor($interests) {
     $validIndoor = array('tv', 'movies', 'cooking', 'board games', 'puzzles', 'reading', 'playing cards', 'video games');
-    return !array_diff($interests, $validIndoor) ? true : false;
+    return !empty($interests) && !array_diff($interests, $validIndoor) ? true : false;
 }
 
 function validOutdoor($interests) {
     $validOutdoor = array('hiking', 'biking', 'swimming', 'collecting', 'walking', 'climbing');
-    return !array_diff($interests, $validOutdoor) ? true : false;
+    return !empty($interests) && !array_diff($interests, $validOutdoor) ? true : false;
 }
 
 function validEmail($data) {
