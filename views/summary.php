@@ -46,7 +46,7 @@
                     <li class="list-group-item">Seeking: {{ @memberSeeking }}</li>
                     <check if="{{ @memberOutdoor == '' && @memberIndoor == '' }}">
                         <false>
-                            <li class="list-group-item">Interests: {{ @memberOutdoor}}, {{ @memberIndoor }}</li>
+                            <li class="list-group-item">Interests: {{ @memberOutdoor}} {{ @memberIndoor }}</li>
                         </false>
                     </check>
                 </ul>

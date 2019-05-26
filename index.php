@@ -101,6 +101,7 @@ $f3->route('GET|POST /personal', function ($f3) {
         }
 
         if (!empty($_POST['gender'])) {
+            $f3->set('gend', $_POST['gender']);
             $member->setGender($_POST['gender']);
         }
 
@@ -119,6 +120,9 @@ $f3->route('GET|POST /personal', function ($f3) {
                 $f3->set('isValid', FALSE);
             }
         }
+
+        $f3->set('premium', $_POST['premiumCheck']);
+
 
         $_SESSION['member'] = serialize($member);
 
@@ -208,12 +212,14 @@ $f3->route('GET|POST /interests', function ($f3) {
         $f3->set('outdoorArray', $_POST['outdoorInterests']);
 
         if (validIndoor($_POST['indoorInterests'])) {
-            $member->setIndoorInterests($_POST['indoorInterests']);
+            $indoors = implode(", ", $_POST['indoorInterests']);
+            $member->setIndoorInterests($indoors);
             $f3->set('isValid', TRUE);
         }
 
         if (validOutdoor($_POST['outdoorInterests'])) {
-            $member->setOutdoorInterests($_POST['outdoorInterests']);
+            $outdoors = implode(", ", $_POST['outdoorInterests']);
+            $member->setIndoorInterests($outdoors);
             $f3->set('isValid', TRUE);
         }
 
@@ -244,11 +250,12 @@ $f3->route('GET|POST /summary', function ($f3) {
     $f3->set('memberSeeking', $member->getSeeking());
     $f3->set('memberBio',  $member->getBio());
 
-    $indoor = implode(', ', $member->getInDoorInterests());
-    $outdoor = implode(', ', $member->getOutDoorInterests());
+    $classType = get_class($member);
 
-    $f3->set('memberIndoor', $indoor);
-    $f3->set('memberOutdoor', $outdoor);
+    if($classType == 'PremiumMember') {
+        $f3->set('memberIndoor', $member->getInDoorInterests());
+        $f3->set('memberOutdoor', $member->getOutDoorInterests());
+    }
 
     $_SESSION['member'] = serialize($member);
 

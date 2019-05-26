@@ -78,7 +78,11 @@
                     </div>
                     <label><b>Premium Membership</b></label>
                     <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="premiumCheck" name="premiumCheck">
+                        <input class="form-check-input" type="checkbox" id="premiumCheck" name="premiumCheck"
+                        <check if="{{ !empty(@premium) }}">
+                            checked="checked"
+                        </check>
+                        >
                         <label class="form-check-label" for="premiumCheck">
                             Sign me up for a Premium Account!
                         </label>
