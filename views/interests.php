@@ -35,28 +35,28 @@
         <label><b>Indoor Interests</b></label>
         <form id="interestform" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
             <div class="container-fluid">
-                <repeat group="{{ @indoor }}" value="{{ @indoors }}">
+                <repeat group="{{ @indoors }}" value="{{ @indoor }}">
                     <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" name="indoorInterests[]" value="{{ @indoors }}"
-                        <check if="{{ !empty(@indoorArray) && in_array(@indoors, @indoorArray) }}">
+                        <input class="form-check-input" type="checkbox" name="indoorInterests[]" value="{{ @indoor['interest_id']}}"
+                        <check if="{{ !empty(@indoorArray) && in_array(@indoor, @indoorArray) }}">
                             checked="checked"
                         </check>
                         >
-                        <label class="form-check-label">{{ @indoors }}</label>
+                        <label class="form-check-label">{{ @indoor['interest'] }}</label>
                     </div>
                 </repeat>
             </div>
             <label class="mt-2"><b>Outdoor Interests</b></label>
             <div class="container-fluid">
-                <repeat group="{{ @outdoor }}" value="{{ @outdoors }}">
+                <repeat group="{{ @outdoors }}" value="{{ @outdoor }}">
                     <div class="form-check form-check-inline">
                         <input class="form-check-input" type="checkbox" name="outdoorInterests[]"
-                               value="{{ @outdoors }}"
-                        <check if="{{ !empty(@outdoorArray) && in_array(@outdoors, @outdoorArray) }}">
+                               value="{{ @outdoor['interest_id']}}"
+                        <check if="{{ !empty(@outdoorArray) && in_array(@outdoor, @outdoorArray) }}">
                             checked="checked"
                         </check>
                         >
-                        <label class="form-check-label">{{ @outdoors }}</label>
+                        <label class="form-check-label">{{ @outdoor['interest'] }}</label>
                     </div>
                 </repeat>
             </div>

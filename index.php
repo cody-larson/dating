@@ -27,8 +27,6 @@ $f3->set('DEBUG', 3);
 //Define arrays
 $f3->set('genders', array('Male', 'Female'));
 $f3->set('states', array('Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California', 'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii', 'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana', 'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota', 'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire', 'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota', 'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Puerto Rico', 'Rhode Island', 'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont', 'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'));
-$f3->set('indoor', array('tv', 'movies', 'cooking', 'board games', 'puzzles', 'reading', 'playing cards', 'video games'));
-$f3->set('outdoor', array('hiking', 'biking', 'swimming', 'collecting', 'walking', 'climbing'));
 
 //Define a default route
 $f3->route('GET /', function () {
@@ -202,25 +200,45 @@ $f3->route('GET|POST /profile', function ($f3) {
 //Define interests route
 $f3->route('GET|POST /interests', function ($f3) {
 
+    $dbh = new Database();
+    $indoorInterests = $dbh->createIndoorInterests();
+    $outdoorInterests = $dbh->createOutdoorInterests();
+    $inInterests = array();
+    $outInterests = array();
+
+    $f3->set('indoors', $indoorInterests);
+    $f3->set('outdoors', $outdoorInterests);
+
     $f3->set('isValid', FALSE);
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         $member = unserialize($_SESSION['member']);
 
-        $f3->set('indoorArray', $_POST['indoorInterests']);
-        $f3->set('outdoorArray', $_POST['outdoorInterests']);
-
-        if (validIndoor($_POST['indoorInterests'])) {
-            $indoors = implode(", ", $_POST['indoorInterests']);
-            $member->setIndoorInterests($indoors);
-            $f3->set('isValid', TRUE);
+        if (!empty($_POST['indoorInterests'])) {
+            foreach ($_POST['indoorInterests'] as $id) {
+                $i = $dbh->getInterest($id);
+                array_push($inInterests, $i[0]);
+            }
+            $f3->set('indoorArray', $inInterests);
+            if (validIndoor($inInterests)) {
+                $indoors = implode(", ", $inInterests);
+                $member->setInDoorInterests($indoors);
+                $f3->set('isValid', TRUE);
+            }
         }
 
-        if (validOutdoor($_POST['outdoorInterests'])) {
-            $outdoors = implode(", ", $_POST['outdoorInterests']);
-            $member->setIndoorInterests($outdoors);
-            $f3->set('isValid', TRUE);
+        if (!empty($_POST['outdoorInterests'])) {
+            foreach ($_POST['outdoorInterests'] as $id) {
+                $i = $dbh->getInterest($id);
+                array_push($outInterests, $i[0]);
+            }
+            $f3->set('outdoorArray', $outInterests);
+            if (validOutdoor($outInterests)) {
+                $outdoors = implode(", ", $outInterests);
+                $member->setOutDoorInterests($outdoors);
+                $f3->set('isValid', TRUE);
+            }
         }
 
         $_SESSION['member'] = serialize($member);
@@ -237,7 +255,6 @@ $f3->route('GET|POST /interests', function ($f3) {
 
 //Define the summary route
 $f3->route('GET|POST /summary', function ($f3) {
-
     $member = unserialize($_SESSION['member']);
 
     $f3->set('firstName', $member->getFname());
@@ -248,11 +265,11 @@ $f3->route('GET|POST /summary', function ($f3) {
     $f3->set('memberEmail', $member->getEmail());
     $f3->set('memberState', $member->getState());
     $f3->set('memberSeeking', $member->getSeeking());
-    $f3->set('memberBio',  $member->getBio());
+    $f3->set('memberBio', $member->getBio());
 
     $classType = get_class($member);
 
-    if($classType == 'PremiumMember') {
+    if ($classType == 'PremiumMember') {
         $f3->set('memberIndoor', $member->getInDoorInterests());
         $f3->set('memberOutdoor', $member->getOutDoorInterests());
     }
