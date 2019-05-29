@@ -1,8 +1,7 @@
 <?php
-
 ?>
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
     <!-- Required meta tags -->
@@ -13,43 +12,40 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 
-    <!-- Font Awesome CDN -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
-          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
 
     <!-- Personal CSS -->
-    <link rel="stylesheet" href="./styles/styles.css">
+    <link rel="stylesheet" href="../styles/styles.css">
 
     <title>Dating Site</title>
-</head>
-<body>
-<header>
-    <nav class="navbar fixed-top navbar-light bg-light border-bottom">
-        <a class="navbar-brand" href="#">My Dating Website</a>
+    <nav class="navbar fixed-top navbar-light bg-light">
+        <a class="navbar-brand" href="#">Profile View</a>
         <form class="form-inline">
-            <a class="btn btn-outline-success my-2 my-sm-0" href="./admin" role="button">Admin</a>
+            <a class="btn btn-outline-success my-2 my-sm-0" href="../admin" role="button">Back to Admin</a>
         </form>
     </nav>
-</header>
-<section id="main">
-    <div class="container border rounded pt-3 pb-3">
+</head>
+<body>
+<div class="container">
+    <div class="container border bg-white rounded pt-5 pl-4 pr-4 under-sticky">
         <div class="row">
             <div class="col-md-6">
                 <ul class="list-group">
-                    <li class="list-group-item">Name: {{ @firstName }} {{@lastName}}</li>
+                    <li class="list-group-item"> {{ @firstName }} {{@lastName}}</li>
                     <check if="{{ @memberGender == '' }}">
                         <false>
-                            <li class="list-group-item">Gender: {{ @memberGender }}</li>
+                            <li class="list-group-item"> {{ @memberGender }} </li>
                         </false>
                     </check>
-                    <li class="list-group-item">Age: {{ @memberAge }}</li>
-                    <li class="list-group-item">Phone: {{ @memberPhone }}</li>
-                    <li class="list-group-item">Email: {{ @memberEmail}}</li>
-                    <li class="list-group-item">State: {{ @memberState }}</li>
-                    <li class="list-group-item">Seeking: {{ @memberSeeking }}</li>
+                    <li class="list-group-item"> {{ @memberAge }} </li>
+                    <li class="list-group-item"> {{ @memberPhone }} </li>
+                    <li class="list-group-item"> {{ @memberEmail}} </li>
+                    <li class="list-group-item"> {{ @memberState }} </li>
+                    <li class="list-group-item"> {{ @memberSeeking }} </li>
                     <check if="{{ @memberOutdoor == '' && @memberIndoor == '' }}">
                         <false>
-                            <li class="list-group-item">Interests: {{ @memberIndoor}}, {{ @memberOutdoor }}</li>
+                            <li class="list-group-item"> {{ @memberOutdoor}}, {{ @memberIndoor }}</li>
                         </false>
                     </check>
                 </ul>
@@ -64,12 +60,11 @@
                 </div>
             </div>
         </div>
-        <div class="container text-center mt-2 mb-2">
+        <div class="container text-center mb-2">
             <a href="./" class="btn btn-primary btn-lg" role="button"> Contact Me! </a>
         </div>
     </div>
-</section>
-
+</div>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

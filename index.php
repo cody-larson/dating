@@ -36,6 +36,16 @@ $f3->route('GET /', function () {
     echo $view->render('views/home.html');
 });
 
+//Define admin route
+$f3->route('GET|POST /admin', function ($f3) {
+    $dbh = new Database();
+    $dbh->connect();
+    $members = $dbh->getMembers();
+    $f3->set('members', $members);
+    echo Template::instance()->render('views/admin.php');
+});
+
+
 //Define personal route
 $f3->route('GET|POST /personal', function ($f3) {
 
@@ -327,6 +337,27 @@ $f3->route('GET|POST /summary', function ($f3) {
     $_SESSION['member'] = serialize($member);
 
     echo Template::instance()->render('views/summary.php');
+});
+
+$f3->route('GET|POST /member/@member_id', function($f3, $params) {
+    $dbh = new Database();
+    $dbh->connect();
+    $id = $params['member_id'];
+    $member = $dbh->getMember($id);
+    $f3->set('firstName', $member[0]['fname']);
+    $f3->set('lastName', $member[0]['lname']);
+    $f3->set('memberAge', $member[0]['age']);
+    $f3->set('memberGender', $member[0]['gender']);
+    $f3->set('memberPhone', $member[0]['phone']);
+    $f3->set('memberEmail', $member[0]['email']);
+    $f3->set('memberState', $member[0]['state']);
+    $f3->set('memberSeeking', $member[0]['seeking']);
+    $f3->set('memberBio', $member[0]['bio']);
+    if ($member[0]['premium'] == 1) {
+        $f3->set('memberOutdoor', $member[0]['outdoorInterests']);
+        $f3->set('memberIndoor', $member[0]['indoorInterests']);
+    }
+    echo Template::instance()->render('views/member.php');
 });
 
 //Run Fat-Free
