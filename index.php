@@ -241,6 +241,43 @@ $f3->route('GET|POST /interests', function ($f3) {
             }
         }
 
+        if (!empty($_POST['outdoorInterests']) & !empty($_POST['indoorInterests'])) {
+            $allInterests = array_merge($_POST['indoorInterests'], $_POST['outdoorInterests']);
+            $_SESSION['interests'] = $allInterests;
+        } elseif (!empty($_POST['indoorInterests'])) {
+            $allInterests = $_POST['indoorInterests'];
+        } elseif (!empty($_POST['outdoorInterests'])) {
+            $allInterests = $_POST['outdoorInterests'];
+        } else {
+            $allInterests = NULL;
+        }
+
+        $first = $member->getFname();
+        $last = $member->getLname();
+        $age = $member->getAge();
+        $gender = $member->getGender();
+        $phone = $member->getPhone();
+        $email = $member->getEmail();
+        $state = $member->getState();
+        $seeking = $member->getSeeking();
+        $bio = $member->getBio();
+
+
+        $classType = get_class($member);
+
+        $image = NULL;
+
+        if ($classType == 'PremiumMember') {
+            $premium = 1;
+            $memberKey = $dbh->insertMember($first, $last, $age, $gender, $phone, $email, $state, $seeking, $bio, $premium, $image);
+            foreach ($allInterests as $id) {
+                $dbh->insertInterests($memberKey, $id);
+            }
+        } else {
+            $premium = 0;
+            $dbh->insertMember($first, $last, $age, $gender, $phone, $email, $state, $seeking, $bio, $premium, $image);
+        }
+
         $_SESSION['member'] = serialize($member);
 
         $valid = $f3->get('isValid');
@@ -248,6 +285,7 @@ $f3->route('GET|POST /interests', function ($f3) {
         if ($valid) {
             $f3->reroute('./summary');
         }
+
     }
 
     echo Template::instance()->render('views/interests.php');
@@ -255,17 +293,29 @@ $f3->route('GET|POST /interests', function ($f3) {
 
 //Define the summary route
 $f3->route('GET|POST /summary', function ($f3) {
+    $dbh = new Database();
+    $dbh->connect();
+
     $member = unserialize($_SESSION['member']);
 
-    $f3->set('firstName', $member->getFname());
-    $f3->set('lastName', $member->getLname());
-    $f3->set('memberAge', $member->getAge());
-    $f3->set('memberGender', $member->getGender());
-    $f3->set('memberPhone', $member->getPhone());
-    $f3->set('memberEmail', $member->getEmail());
-    $f3->set('memberState', $member->getState());
-    $f3->set('memberSeeking', $member->getSeeking());
-    $f3->set('memberBio', $member->getBio());
+    $first = $member->getFname();
+    $f3->set('firstName', $first);
+    $last = $member->getLname();
+    $f3->set('lastName', $last);
+    $age = $member->getAge();
+    $f3->set('memberAge', $age);
+    $gender = $member->getGender();
+    $f3->set('memberGender', $gender);
+    $phone = $member->getPhone();
+    $f3->set('memberPhone', $phone);
+    $email = $member->getEmail();
+    $f3->set('memberEmail', $email);
+    $state = $member->getState();
+    $f3->set('memberState', $state);
+    $seeking = $member->getSeeking();
+    $f3->set('memberSeeking', $seeking);
+    $bio = $member->getBio();
+    $f3->set('memberBio', $bio);
 
     $classType = get_class($member);
 
