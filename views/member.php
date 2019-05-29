@@ -43,9 +43,11 @@
                     <li class="list-group-item"> {{ @memberEmail}} </li>
                     <li class="list-group-item"> {{ @memberState }} </li>
                     <li class="list-group-item"> {{ @memberSeeking }} </li>
-                    <check if="{{ @memberOutdoor == '' && @memberIndoor == '' }}">
+                    <check if="{{ @memberInterests == '' }}">
                         <false>
-                            <li class="list-group-item"> {{ @memberOutdoor}}, {{ @memberIndoor }}</li>
+                            <li class="list-group-item">Interests:
+                                <repeat group="{{ @memberInterests }}" value="{{ @item }}"> {{ @item['interest'] }}</repeat>
+                            </li>
                         </false>
                     </check>
                 </ul>

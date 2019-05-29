@@ -129,4 +129,14 @@ class Database
         $result = $statement->fetchAll(PDO::FETCH_ASSOC);
         return $result;
     }
+
+    public function getMemberInterests($id) {
+        $dbh = $this->connect();
+        $sql = "SELECT interest FROM interest INNER JOIN member_interest ON member_interest.interest_id = interest.interest_id WHERE member_id = :id";
+        $statement = $dbh->prepare($sql);
+        $statement->bindParam(':id', $id, PDO::PARAM_INT);
+        $statement->execute();
+        $result = $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+    }
 }

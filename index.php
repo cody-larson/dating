@@ -344,6 +344,7 @@ $f3->route('GET|POST /member/@member_id', function($f3, $params) {
     $dbh->connect();
     $id = $params['member_id'];
     $member = $dbh->getMember($id);
+    $interests = $dbh->getMemberInterests($id);
     $f3->set('firstName', $member[0]['fname']);
     $f3->set('lastName', $member[0]['lname']);
     $f3->set('memberAge', $member[0]['age']);
@@ -354,8 +355,7 @@ $f3->route('GET|POST /member/@member_id', function($f3, $params) {
     $f3->set('memberSeeking', $member[0]['seeking']);
     $f3->set('memberBio', $member[0]['bio']);
     if ($member[0]['premium'] == 1) {
-        $f3->set('memberOutdoor', $member[0]['outdoorInterests']);
-        $f3->set('memberIndoor', $member[0]['indoorInterests']);
+        $f3->set('memberInterests', $interests);
     }
     echo Template::instance()->render('views/member.php');
 });
